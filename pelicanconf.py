@@ -36,15 +36,4 @@ DEFAULT_PAGINATION = 10
 STATIC_PATH = ['images']
 
 # Theme stuff
-#THEME = "html5-dopetrope"
-THEME = "pelican-material"
-
-DISQUS_SITENAME = "jvanz"
-
-from functools import partial
-JINJA_FILTERS = {
-		'sort_by_article_count': partial(
-			sorted,
-			key=lambda tags: len(tags[1]),
-			reverse=True)
-		} # reversed for descending order])
+THEME = "vanz-theme"
