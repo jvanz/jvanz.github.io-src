@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = u'Jos\xe9 Guilherme Vanz'
-SITENAME = u'Vanz'
+SITENAME = u'vanz'
 SITEURL = ''
 
 PATH = 'content'
@@ -25,8 +25,9 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
          ('You can modify those links in your config file', '#'),)
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('twitter', 'https://twitter.com/vanzstuff'),
+	('linkedin', 'https://br.linkedin.com/in/joseguilhermevanz'),
+	('github', 'https://github.com/jvanz'))
 
 DEFAULT_PAGINATION = 10
 
@@ -37,3 +38,6 @@ STATIC_PATH = ['images']
 
 # Theme stuff
 THEME = "vanz-theme"
+
+BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer. I love Open Source and programming (especially in C/C++, Python and Scala)"
+PROFILE_IMAGE = "avatar.jpg"
