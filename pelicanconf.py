@@ -41,3 +41,5 @@ THEME = "vanz-theme"
 
 BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer. I love Open Source and programming"
 PROFILE_IMAGE = "avatar.jpg"
+
+DISQUS_SITENAME = "jvanz"
