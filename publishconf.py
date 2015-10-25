@@ -56,3 +56,4 @@ BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer
 PROFILE_IMAGE = "avatar.jpg"
 
 DISQUS_SITENAME = "jvanz"
+GOOGLE_ANALYTICS = "UA-67994243-1"
