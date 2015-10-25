@@ -37,7 +37,7 @@ DEFAULT_PAGINATION = 10
 STATIC_PATH = ['images']
 
 # Theme stuff
-THEME = "vanz-theme"
+THEME = "pelican-hyde"
 
 BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer. I love Open Source and programming"
 PROFILE_IMAGE = "avatar.jpg"

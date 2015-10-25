@@ -1,3 +1,6 @@
 [submodule "output"]
 	path = output
 	url = git@github.com:jvanz/jvanz.github.io.git
+[submodule "pelican-hyde"]
+	path = pelican-hyde
+	url = git@github.com:jvanz/pelican-hyde.git
