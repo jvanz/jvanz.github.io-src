@@ -26,10 +26,12 @@ program break. Maybe in the future I implement this feature and use the `brk` sy
 
 ### Memory management
 
-A linked list is used to handle which memory block are free and which is allocated, let's call the list `free_list`. Each element in `free_list` is a memory block available to be allocated, it is
-composed of a header and the available memory itself. The header contains two fields, the  memory block's size and a pointer to the next element in the list. Therefore, when a mount of memory
-is requested a search in the list is performed looking for a memory block with enough size to attempt the request. The algorithm follows the 'First fit' approach. Thus, the first memory block found
-with enough size is slitted, if necessary, and returned to the caller. If any block has enough size, the heap is increased and the new memory is returned.
+A linked list keeps all available memory block, let's call the list `free_list`. Each element is composed of a header and the available memory itself. The header contains two fields, the  memory block's size and a pointer to the next element in the list. Therefore, when a mount of memory
+is requested a search in the list is performed looking for a memory block with enough size to attempt the request. The algorithm follows the 'First fit' approach.
+It's means, the first memory block found with enough size is slitted (if necessary) and returned to the caller. If any block has enough size, the heap is increased and the new memory is returned.
+
+When the user wants to free a pointer another search in the `free_list` is performed. This time, looking for a memory block next the to the block is being freed. If a block is find, the two blocks as merged into one. Otherwise, the block is append in the list. The goal of merge nearly block is to avoid memory fragmentation. ;)
+
 
 - free algorithm
 - free list
