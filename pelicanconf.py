@@ -26,7 +26,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 
 # Social widget
 SOCIAL = (('twitter', 'https://twitter.com/vanzstuff'),
-	('linkedin', 'https://br.linkedin.com/in/joseguilhermevanz'),
+	('linkedin', 'https://br.linkedin.com/in/jvanz'),
 	('github', 'https://github.com/jvanz'))
 
 DEFAULT_PAGINATION = 10
@@ -43,3 +43,5 @@ BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer
 PROFILE_IMAGE = "avatar.jpg"
 
 DISQUS_SITENAME = "jvanz"
+
+PLUGINS = ['pelican_gist']
