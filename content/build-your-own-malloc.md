@@ -31,7 +31,7 @@ For more details, take a look in the man page. ;)
 
 ### Code
 
-[gist:id=869420fb87353049d4d7,file=memory.c]
+[gist:id=ba82bdd0dfeb44c260aa,file=memory.c]
 
 The cornerstone of the code is a linked list, called `free_list`. It stores all available memories blocks. Each element is
 composed for a header and the memory itself. The header is a structure that contains two metadata. The first field of the
