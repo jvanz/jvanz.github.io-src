@@ -1,6 +1,6 @@
 Title: malloc/free implementation. Just4Fun!
 Date: 2015-11-26 00:08
-Modified: 2015-11-29 11:45
+Modified: 2016-01-24 22:22
 Tags: c, tlpi, glibc, memory
 Author: José Guilherme Vanz
 
@@ -31,40 +31,42 @@ For more details, take a look in the man page. ;)
 
 ### Code
 
+[gist:id=869420fb87353049d4d7,file=memory.c]
+
 The cornerstone of the code is a linked list, called `free_list`. It stores all available memories blocks. Each element is
 composed for a header and the memory itself. The header is a structure that contains two metadata. The first field of the
 struct is block's size and the second is a pointer to next memory block in the `free_list`. The first thing necessary
-when a program request some memory is check if the `free_list` is already initialized. If not, it is initiated with a
-block of 0 size. This is done to keep the first element in the list always the same. Thus, it is more easy to know when
-stop a loop through the list and reduce the code complexity.
+when a program request some memory is check if the `free_list` is already initialized (line 29). If not, it is initiated
+with a block of 0 size (lines 29 ~ 36). This is done to keep the first element in the list always the same. Thus, it is more easy to know
+when stop a loop through the list and reduce the code complexity.
+
+![]({filename}/images/mem_init.png)
 
 Once `free_list` initiated, a search in the list is performed. Looking for a memory block with enough size to attempt the
 request. The algorithm follows the 'first fit' approach. It means that the first memory block found with enough size is
-split  and returned a pointer to the memory to the caller. If any block has enough size, the heap is increased and the
-new memory is returned. The pointer returned to the user is a pointer to the memory block itself. It is not include the
-header. Does not make sense give to caller  access to the control structures. This structure is used only for memory
-management and to know what is the memory block size when the program wants to frees it.
+split and returned a pointer to the memory to the caller (lines 38 ~ 53). If any block has enough size, the heap is increased and the
+new memory is returned (line 55). The pointer returned to the user is a pointer to the memory block itself. It is
+not include the header. Does not make sense give to caller  access to the control structures. This structure is used only
+for memory management and to know what is the memory block size when the program wants to frees it.
 
-As you will see soon in the code, all memory blocks are multiple of the header size. It means the minimum
+![]({filename}/images/one_mem_allocate.png)
+
+As you can see between lines 26 and 28, all memory blocks are multiple of the header size. It means the minimum
 memory size allocated is the HEADER_SIZE * 2 (with the header). This approach facilitate the pointer arithmetic and avoid
 counting every single byte. In other words, even if the user requests less memory, the allocated memory will be always
 multiple of the HEADER_SIZE.
 
 When the user wants to free a pointer, another search in the `free_list` is performed. This time, looking for a memory block
-next the to the block is being freed. If a block is found, the two blocks are merged into one. Otherwise, the block is
-appended in the list. The goal of merge close blocks is avoid memory fragmentation. ;)
+next the to the block is being freed. If a block is found, the two blocks are merged into one (lines 64 ~ 77). Otherwise,
+the block is appended in the list (lines 78 ~ 80). The goal of merge close blocks is avoid memory fragmentation. ;)
 
 According to my weak skill in asymptotic analysis, both functions have running time of O(n). Since each functions performed
 a search in the `free_list`. Please, tell me if I am wrong. I will study more about this topic and correct if I wrote
-bullshit. Well, let's take a look in the code! Thus you can see all the implementation details.
+bullshit. The following sources are the header and a test program.
 
 [gist:id=869420fb87353049d4d7,file=memory.h]
 
-[gist:id=869420fb87353049d4d7,file=memory.c]
-
 [gist:id=869420fb87353049d4d7,file=sample.c]
-
-The last source code is a simple sample program using the functions described before.
 
 Feel free to ask me in the comments. =]
 
