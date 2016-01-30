@@ -3,10 +3,10 @@ Date: 2016-01-28 00:00
 Tags: git
 Author: José Guilherme Vanz
 
-This post will demonstrates one of the many cool features available in Git, partial commit. This feature allows commit
-some hunk of a file leaving other to be committed  in a future commit.
+This post will demonstrates one of many cool features available in Git, partial commit. This feature allows commit
+some hunk of a file leaving other ones for a future commit.
 
-Let's you're working on a project in the following source code:
+Let's suppose in a project there is the following source code:
 
 ```c
 #include <stdio.h>
@@ -43,7 +43,7 @@ Date:   Tue Jan 26 20:45:42 2016 -0200
 
 ```
 
-And you made a change:
+And the first change is made:
 
 ```
 $ git diff
@@ -62,8 +62,8 @@ index ce46da0..9eaf12b 100644
 
 ```
 
-Suppose a colleague saw you changing the `commit.c` file and requests you to change the name of the `foo()` function to
-`xpto()`. So you did and now the diff is:
+Suppose a colleague requests another update in same file. He/She asks to change the name of the `foo()` function to
+`xpto()`. So after both changes the diff is:
 
 
 ```
@@ -100,12 +100,13 @@ index ce46da0..8255080 100644
 
 ```
 
-Nice, now it's time to commit the changes. However, as a good developer you do like mix different implementation or
-fixes in the same commit. Fortunately git has a feature that will help on this situation. The command `git add` and
-`git commit` allows user to select which hunks of a file should be added. This is done by passing the `-p, --patch`
-option. In our example, let's use `git commit` to choose the hunk should be added in first commit:
+Nice, now it's time to commit the changes. However, it's necessary commit each hunk in different commits. Fortunately
+git has a feature that will help on this situation. The command `git add` and `git commit` allows user to select which
+hunks of a file should be added. This is done by passing the `-p, --patch` option. In our example, let's use `git commit`
+to choose the hunks should be added in first commit:
 
 ```
+$ git commit -p commit2.c
 diff --git a/commit.c b/commit.c
 index ce46da0..8255080 100644
 --- a/commit.c
@@ -139,8 +140,8 @@ index ce46da0..8255080 100644
 Stage this hunk [y,n,q,a,d,/,s,e,?]?
 ```
 
-As you can see git shows each hunk and ask the user for what should be done with it. The options are: [y,n,q,a,d,/,s,e,?].
-To see a help text type `?` and press enter. The following help text shall be show:
+As can be seen, git shows each hunk and asks the user for what should be done with it. The options are: [y,n,q,a,d,/,s,e,?].
+To see help text, type `?`. The following text shall be shown:
 
 ```
 y - stage this hunk
@@ -159,9 +160,10 @@ e - manually edit the current hunk
 ? - print help
 ```
 
-As using very small file all changes are being shown as a unique hunk. So is necessary split it selecting for the first commit just the changes related if `bar()` function.
-For that, there are two options: `s` and `e`. The first one let git split the current hunk into smaller one and the second allow the user manually tells git which hunk's part
-go in the commit. In this sample we will use `s` options. So after select the actions git shows:
+As the file is very small, all changes are shown as a unique hunk. So is necessary split it, selecting for the first
+commit just the changes related if `bar()` function. For that, there are two options: `s` and `e`. In first one,
+git splits the current hunk into smaller ones. The second allows user manually choose which hunk it wants. In this
+sample we will use `s` options. So after select the actions, git shows:
 
 ```
 Stage this hunk [y,n,q,a,d,/,s,e,?]? s
@@ -178,8 +180,9 @@ Split into 5 hunks.
 Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]?
 ```
 
-The previous hunk was being splitted into 5 hunks. Git now will iterate all of them asking the user what should be done with each one. The first hunk should be ignored now,
-as it is not related with function `bar()` changes. Hence, the `n` option is the right one.
+The previous hunk has been split into 5 hunks. Git now will iterate all of them asking the user what should be done
+with each one. The first hunk should be ignored, as it is not related with function `bar()`. Hence, the `n` option
+(do not stage) is the right one.
 
 ```
 Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]? n
@@ -196,7 +199,7 @@ Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]? n
 Stage this hunk [y,n,q,a,d,/,K,j,J,g,e,?]?
 ```
 
-Second hunk should be ignored too:
+Second hunk should not be added either:
 
 ```
 Stage this hunk [y,n,q,a,d,/,K,j,J,g,e,?]? n
@@ -230,7 +233,8 @@ Stage this hunk [y,n,q,a,d,/,K,j,J,g,e,?]? n
 Stage this hunk [y,n,q,a,d,/,K,j,J,g,e,?]?
 ```
 
-In the fourth hunk we have the first change related with `bar()` functions. As could be seen, this hunk must be in the commit. Thus, `y` is the correct options this time.
+In the fourth hunk we have the first change related with `bar()` function. As could be seen, this hunk must be in the
+commit. Thus, `y` (stage this hunk) is the correct option this time.
 
 ```
 Stage this hunk [y,n,q,a,d,/,K,j,J,g,e,?]? y
@@ -243,7 +247,8 @@ Stage this hunk [y,n,q,a,d,/,K,g,e,?]?
 ```
 
 Again, the fifth hunk should be added. Choose `y` option...
-When there are no more hunk to be analyzed git open the editor to the user write a commit message. After write and save the commit message, it's done. See:
+When there are no more hunks to be analyzed git opens the editor to the user write a commit message. Once the message is
+written, it's done. See:
 
 ```
 $git log
@@ -286,7 +291,8 @@ index 9eaf12b..8255080 100644
 
 ```
 
-Hence, the first commit contains just the changes made with `bar()` functions. The remaing changes can be commited in a separated commit:
+Hence, the first commit contains just the changes made with `bar()` function. The remaining changes can be committed in
+second commit:
 
 ```
 $git commit -a -m "Rename foo() function to xpto()"
@@ -312,3 +318,5 @@ Date:   Tue Jan 26 20:45:42 2016 -0200
 
     Add commit.c
 ```
+
+I hope you have enjoyed the tip. ;)
