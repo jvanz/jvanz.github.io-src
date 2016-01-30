@@ -3,8 +3,8 @@ Date: 2016-01-28 00:00
 Tags: git
 Author: José Guilherme Vanz
 
-This post will demonstrates one of many cool features available in Git, partial commit. This feature allows commit
-some hunk of a file leaving other ones for a future commit.
+This post will demonstrate one of many cool features available in Git, partial commit. This feature allows add just
+some hunk of a file leaving other ones for future commit.
 
 Let's suppose in a project there is the following source code:
 
@@ -101,7 +101,7 @@ index ce46da0..8255080 100644
 ```
 
 Nice, now it's time to commit the changes. However, it's necessary commit each hunk in different commits. Fortunately
-git has a feature that will help on this situation. The command `git add` and `git commit` allows user to select which
+git has a feature that will help on this situation. The commands `git add` and `git commit` allows user to select which
 hunks of a file should be added. This is done by passing the `-p, --patch` option. In our example, let's use `git commit`
 to choose the hunks should be added in first commit:
 
@@ -160,10 +160,10 @@ e - manually edit the current hunk
 ? - print help
 ```
 
-As the file is very small, all changes are shown as a unique hunk. So is necessary split it, selecting for the first
-commit just the changes related if `bar()` function. For that, there are two options: `s` and `e`. In first one,
+The file is very small, all changes are shown as a unique hunk. So it is necessary split it, selecting for the first
+commit just the changes related with `bar()` function. For that, there are two options: `s` and `e`. In first one,
 git splits the current hunk into smaller ones. The second allows user manually choose which hunk it wants. In this
-sample we will use `s` options. So after select the actions, git shows:
+sample we will use `s` option. So after select the actions, git shows:
 
 ```
 Stage this hunk [y,n,q,a,d,/,s,e,?]? s
@@ -247,8 +247,8 @@ Stage this hunk [y,n,q,a,d,/,K,g,e,?]?
 ```
 
 Again, the fifth hunk should be added. Choose `y` option...
-When there are no more hunks to be analyzed git opens the editor to the user write a commit message. Once the message is
-written, it's done. See:
+When there are no more hunks to be analyzed, as we use the `git commit` command,  the editor to write a commit message
+is opened. Once the message is written, it's done. See:
 
 ```
 $git log
