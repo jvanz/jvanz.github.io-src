@@ -38,16 +38,20 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
          ('You can modify those links in your config file', '#'),)
 
 # Social widget
-SOCIAL = (('twitter', 'https://twitter.com/vanzstuff'),
-	('linkedin', 'https://br.linkedin.com/in/joseguilhermevanz'),
+SOCIAL = (('email', 'guilherme.sft@gmail.com'),
+	('twitter', 'https://twitter.com/vanzstuff'),
+	('linkedin', 'https://br.linkedin.com/in/jvanz'),
 	('github', 'https://github.com/jvanz'))
+
+DEFAULT_PAGINATION = 10
 
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
-STATIC_PATH = ['images']
+STATIC_PATHS = ['images', 'extra/CNAME']
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 
 # Theme stuff
 THEME = "pelican-hyde"
@@ -55,5 +59,7 @@ THEME = "pelican-hyde"
 BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer. I love Open Source and programming"
 PROFILE_IMAGE = "avatar.jpg"
 
+PLUGINS = ['pelican_gist']
+
 DISQUS_SITENAME = "jvanz"
-GOOGLE_ANALYTICS = "UA-67994243-1"
+GOOGLE_ANALYTICS = "UA-73126405-1"
