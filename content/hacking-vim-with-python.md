@@ -22,6 +22,46 @@ necessary take a look if you vim allow you use python. For that you can run the
 `vim --version` and see if your vim has python support. The output should show
 something like `+python`
 
+### Scripting
+
+There are some way you can execute a python code in vim. You can use the commands:
+`:py[thon]`, `:pydo`, `:pyfile`. In this article I'll do a short description of
+them, but I'll use just `:pyfile` in the example.
+
+When you decide write the python script you can write it in a separated file
+or embedded it in your vimrc. If you do not want write file for you script you
+can use the `:[range]python` or
+
+```
+:[range]py[thon] << {endmarker}
+{script}
+{endmarker}
+```
+
+The fist option is useful if you want to execute a single python statement.
+For example: `:python print "Python rocks!"`. The second way is more interesting,
+it is allows embedded the python code inside vim script. Take a look:
+
+```
+function! IcecreamInitialize()
+python3 << EOF
+class StrawberryIcecream:
+    def __call__(self):
+        print('EAT ME')
+ice = StrawberryIcecream()
+ice()
+EOF
+endfunction
+```
+
+Another option is the `[range]pydo {body}` command. It is a good option if the
+script should be executed in each line of the range. In this command the `{body}`
+is executed as `def _vim_pydo(line, linenr) {body}`. Thus, the body script can
+get the line text and number from arguments. The function should return a string
+or None. If a string is returned the line is updated to that value. A possible
+example is `:pydo return "%s\t%d" % (line[::-1], len(line))`
+
+
 ### Vim python module
 
 The vim integration with python is done via a python module. This module gives
