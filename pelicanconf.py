@@ -25,7 +25,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
          ('You can modify those links in your config file', '#'),)
 
 # Social widget
-SOCIAL = (('email', 'guilherme.sft@gmail.com'),
+SOCIAL = (('email', 'jose.guilherme.vanz@gmail.com'),
 	('twitter', 'https://twitter.com/vanzstuff'),
 	('linkedin', 'https://br.linkedin.com/in/jvanz'),
 	('github', 'https://github.com/jvanz'))
