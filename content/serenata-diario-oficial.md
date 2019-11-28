@@ -1,14 +1,13 @@
-Title: Rascunho: Como funciona o robozinho do Serenata que baixa os diários oficiais?
-Date: 2019-11-25 00:00
-Modified: 2016-01-24 22:22
-Tags: python, scrapy, html, serenata,css,xpath
+Title: Como funciona o robozinho do Serenata que baixa os diários oficiais?
+Date: 2019-11-28 00:00
+Tags: python, scrapy, html, serenata, css, xpath
 Author: José Guilherme Vanz
 
 Recentemente comecei a fazer parte do programa de [embaixadores](https://embaixadoras.ok.org.br/) da Open Knowledge Brasil (OKBR). Como minha primeira contribuição, comecei adicionar novos spiders no [diario-oficial](https://github.com/okfn-brasil/diario-oficial). Esse repositório possui diversos spiders para a raspagem de dados dos diários oficiais de cada município brasileiro. Como sou de Santa Catarina, decidi inicial
 com as cidades do meu Estado. Felizmente, no tempo de escrita deste artigo, minha primeira [pull request](https://github.com/okfn-brasil/diario-oficial/pull/135) está aguardando aprovação! :)
 
 Durante esse meio tempo, outros embaixadores demonstraram interesse em adicionar ou modificar os spiders para suas cidades. Ai que entra esse artigo... eu pretendo explicar na forma mais didática que eu conseguir, tudo o que é necessário para começar a entender como adicionar ou alterar um spider. Para isso, irei explicar como funciona cada parte necessária para isso. Incluindo como baixar o código, como rodar um spider, um pouco de python, [Scrapy](https://scrapy.org/), [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML), entre outros.
-Não pretendo ser muito técnico para deixar o documento mais acessivel possível. Mas também não muito superficial que não diga nada. Ou seja, existe a possiblidade de não aguadar ninguém. xD.
+Não pretendo ser muito técnico para deixar o documento mais acessivel possível. Mas também não muito superficial que não diga nada. Ou seja, existe a possiblidade de não agradar ninguém. xD.
 
 Por favor, entre em contato se sentir falta de algo! Então vamos lá...
 
@@ -429,13 +428,13 @@ Quando o scrapy chama o método `parse`, ele espera de retorno um objeto de que 
 
 Quando o método `parse` retornar nada, significa que já achamos tudo o que queremos e nosso robô pode parar e recarregar as baterias.
 
-#### Retornar uma lista `start_requets`
+#### Retornar uma lista/iterável na função `start_requets`
 
-Dê uma olhada no `start_requets` novamente. Note que é usado a palavra reservada `yield` ao invés de `return`.  Isso significa que o método é uma função geradora. Isso significa que a partir da segunda chamada ao `start_request` a execução irá continuar a partir de onde o `yield` anterior foi chamado. Ou seja, enquanto o `start_request` não retorna `None` ou uma lista finita de itens, o scrapy continuará baixando as páginas das URL retornadas pela função `start_requests`. Entenda mais sobre isso no  [video](https://www.youtube.com/watch?v=Gre1yR5yH7U) do Python para Zumbies
+Dê uma olhada no `start_requets` novamente. Note que é usado a palavra reservada `yield` ao invés de `return`.  Isso significa que o método é uma função geradora. O que isso quer dizer? Novamente, simplificando bastante, é como se o retorno da função fosse tratado como uma lista. Isso faz que quando o scrapy chamar o `next` no retorno da `start_request` a execução irá continuar a partir de onde o `yield` anterior foi chamado. Ou seja, enquanto o `start_request` não retorna `None` ou uma lista finita de itens, o scrapy continuará baixando as páginas das URL retornadas pela função `start_requests`. Entenda mais sobre isso no  [video](https://www.youtube.com/watch?v=Gre1yR5yH7U) do Python para Zumbies
 
 Alias! Perceba que a função `parse` também é uma função geradora. ;)
 
-PS: No momento dessa escrita, o spider do Floripa tem um bug. O spider nunca termina. Justamente porque a `start_request` nunca termina. Nunca retorna `None` ou uma lista finita. 
+PS: No momento dessa escrita, o spider do Floripa tem um bug. O spider nunca termina. 
 
 #### Pipeline
 
