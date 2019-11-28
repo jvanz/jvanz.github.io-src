@@ -4,23 +4,25 @@ Modified: 2016-01-24 22:22
 Tags: python, scrapy, html, serenata,css,xpath
 Author: José Guilherme Vanz
 
-Recentemente comecei a fazer parte do programa de [embaixadores](https://embaixadoras.ok.org.br/) da Open Knowledge Brasil (OKBR). Como minha primeira contribuição, comecei adicionar novos spiders no [diario-oficial](https://github.com/okfn-brasil/diario-oficial) para a raspagem de dados dos diários oficiais de cada município brasileiro. Como sou de Santa Catarina, decidi inicial
-com as cidades do meu Estado. E felizmente, no tempo de escrita deste artigo, minha primeira [pull request](https://github.com/okfn-brasil/diario-oficial/pull/135) está aguardando aprovação! :)
+Recentemente comecei a fazer parte do programa de [embaixadores](https://embaixadoras.ok.org.br/) da Open Knowledge Brasil (OKBR). Como minha primeira contribuição, comecei adicionar novos spiders no [diario-oficial](https://github.com/okfn-brasil/diario-oficial). Esse repositório possui diversos spiders para a raspagem de dados dos diários oficiais de cada município brasileiro. Como sou de Santa Catarina, decidi inicial
+com as cidades do meu Estado. Felizmente, no tempo de escrita deste artigo, minha primeira [pull request](https://github.com/okfn-brasil/diario-oficial/pull/135) está aguardando aprovação! :)
 
-Durante esse meio tempo, outros embaixadores demonstraram interesse em adicionar ou modificar os spiders para suas cidades. Ai que entra esse artigo... eu pretendo explicar na forma mais didática que eu conseguir, tudo o que é necessário para começar a entender como adicionar ou alterar um spider. Para isso, irei explicar como funciona cada parte necessária para isso. Incluindo como baixar o código, como rodar um spider, um pouco de python, scrapy e HTML, entre outros.
-Não pretendo ser muito técnico para deixar o documento mais acessivel possível. Mas também não muito superficial que não diga nada. Por favor, entre em contato se sentir falta de algo! Então vamos lá...
+Durante esse meio tempo, outros embaixadores demonstraram interesse em adicionar ou modificar os spiders para suas cidades. Ai que entra esse artigo... eu pretendo explicar na forma mais didática que eu conseguir, tudo o que é necessário para começar a entender como adicionar ou alterar um spider. Para isso, irei explicar como funciona cada parte necessária para isso. Incluindo como baixar o código, como rodar um spider, um pouco de python, [Scrapy](https://scrapy.org/), [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML), entre outros.
+Não pretendo ser muito técnico para deixar o documento mais acessivel possível. Mas também não muito superficial que não diga nada. Ou seja, existe a possiblidade de não aguadar ninguém. xD.
+
+Por favor, entre em contato se sentir falta de algo! Então vamos lá...
 
 ### diario-oficial
 
-O projeto [diario-oficial](https://github.com/okfn-brasil/diario-oficial) da OKBR, tem como objetivo realizar a raspagem de dados dos diário oficiais do maior número de municípios brasileiros possíveis. Como fazemos isso? Bom, os diários oficiais são distribuídos em arquivos doc, pdf e etc. Para que conseguir ter todos esses arquivos utilizamos um robozinho que literalmente abre todas as páginas dos diários oficiais de cada município e baixa todos esses arquivos. Uma vez com os arquivos baixados, convertemos eles em texto (arquivos txt) e pronto! Eles podem serem analisados mais facilmente e fazer as mágicas da ciência de dados! :)
+O projeto [diario-oficial](https://github.com/okfn-brasil/diario-oficial) da OKBR, tem como objetivo realizar a raspagem de dados dos diário oficiais do maior número de municípios brasileiros possíveis. Como fazemos isso? Bom, os diários oficiais são distribuídos em arquivos doc, pdf e etc. Para conseguir ter todos esses arquivos utilizamos um robozinho que literalmente abre todas as páginas dos diários oficiais de cada município e baixa todos esses arquivos. Uma vez com os arquivos baixados, convertemos eles em texto (arquivos txt) e pronto! Depois disso podem ser analisados mais facilmente com as mágicas da ciência de dados! :-)
 
-Antes de mais nada vamos rodar um spider para ver como funciona. Depois vamos ver como é escrito um spider. Para baixar o projeto você ira precisar do `git`. A instalação do `git` vai variar de acordo com seu ambiente. Veja a documentação sobre a instalação [aqui](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). Se precisar de ajuda, não deixe de falar nos canais de comunicação dos Embaixadores. Podemos ajudar por lá! Aliás, esse artigo será todo baseado no meu ambiente, que é um Linux. Não creio que vão existir grandes diferenças entre os sistemas que possa impossibilitar de seguir esse material. A principal diferença, acredito, que seja como irá baixar o repositório do projeto. Mas como disse anteriormente, não hesite em perguntar!
+Antes de mais nada vamos rodar um spider para ver como funciona. Depois vamos ver como ele é escrito. Para baixar o projeto você ira precisar do `git`. A instalação do `git` vai variar de acordo com seu ambiente. Veja a documentação sobre a instalação [aqui](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). Se precisar de ajuda, não deixe de falar nos canais de comunicação dos Embaixadores ou do Serenata. Podemos ajudar por lá! Aliás, esse artigo será todo baseado no meu ambiente, que é um Linux. Não creio que vão existir grandes diferenças entre os sistemas que possa impossibilitar de seguir esse material. A principal diferença, acredito, que seja como irá baixar o repositório do projeto. Mas como disse anteriormente, não hesite em perguntar!
 
-Blz, uma vez com o `git`instalado precisamos baixar o repositório, ou seja o código que o robozinho ira executar. Para isso, vá até a página do projeto no github e copie a URL para você clonar o repositório:
+Blz, uma vez com o `git`instalado precisamos baixar o repositório, ou seja o código que o robozinho ira executar. Para isso, vá até a página do [projeto](https://github.com/okfn-brasil/diario-oficial) no github e copie a URL:
 
 ![]({filename}/images/repo_diario_oficial.png)
 
-Uma vez com a URL podemos clonar o repositório. Clonar é um termo do `git` que basicamente é um sinonimo para baixar um repositório:
+Uma vez com a URL podemos clonar o repositório. Clonar é um termo do `git` que basicamente é um sinônimo para baixar um repositório:
 
 ```bash
 jvanz@earth:~> git clone https://github.com/okfn-brasil/diario-oficial.git
@@ -185,9 +187,9 @@ Você provavelmente irá ver algo parecido com isso:
 2019-11-26 01:40:58 [scrapy.core.scraper] DEBUG: Scraped from <200 http://www.pm
 ```
 
-Vamos dar uma analisada no que isso tudo significa:
+Vamos dar uma analisada no que isso tudo significa.
 
-Esse comando mostra qual é a página de web que o nosso robô está acessando e procurando os arquivos:
+Essa linha mostra qual é a página de web que o nosso robô está acessando e procurando os arquivos:
 
 ```
 2019-11-26 01:40:56 [scrapy.core.engine] DEBUG: Crawled (200) <POST http://www.pmf.sc.gov.br/governo/index.php?pagina=govdiariooficial> (referer: None)
@@ -204,7 +206,7 @@ Esse são arquivos que ele encontrou e baixou:
 2019-11-26 01:40:58 [scrapy.pipelines.files] DEBUG: File (uptodate): Downloaded file from <GET http://www.pmf.sc.gov.br/arquivos/diario/pdf/18_11_2019_23.01.36.df3583c76e3e2ce083a2275cf3e9adbe.pdf> referred in <None>
 ```
 
-Da uma olhada nisso, aqui é texto extraido do arquivo baixado do site do diário oficial:
+Da uma olhada nisso, aqui é texto extraido do arquivo baixado no site do diário oficial:
 
 ```
 2019-11-26 01:40:58 [scrapy.core.scraper] DEBUG: Scraped from <200 http://www.pmf.sc.gov.br/governo/index.php?pagina=govdiariooficial>
@@ -268,7 +270,7 @@ Da uma olhada nisso, aqui é texto extraido do arquivo baixado do site do diári
 ```
 
 Você pode deixar rodando até o robozinho baixar tudo, mas isso vai levar um tempinho. Para parar o robô, aperte `Ctrl + c`.
-Agora dê uma olhada nos arquivos baixados em ``:
+Agora dê uma olhada nos arquivos baixados em `data/full`:
 
 ```bash
 jvanz@earth:~/serenata/diario-oficial> ls data/full/                                                                                                                                                              
@@ -300,7 +302,7 @@ Python é a linguagem de programação que utilizamos para escrever o nosso rob�
 
 Scrapy é a biblioteca que utilizamos para acessar, navegar e encontrar os que queremos nas páginas dos diários oficiais. Podemos dizer que é o coração do nosso robô. Essa lib faz o trabalho sujo que baixar e deixar disponíveis de maneira mais fácil os dados das páginas que estamos vasculhando.
 
-Vamos dar uma olhada como podemos é definido para o nosso robô  a maneira de navegar pelas páginas de nossas cidades. Para exemplificar, vou utilizar a cidade de Florianópolis:
+Vamos dar uma olhada como é definido o nosso robô e  a maneira de navegar pelas páginas web. Para exemplificar, vou utilizar a cidade de Florianópolis:
 
 ```python
 import re
@@ -378,7 +380,7 @@ Nas primeiras linhas do script estamos dizendo ao Python o que vamos utilizar. P
 
 O atributo `name` diz qual é o nome do spider. Lembra quando rodamos o spider a primeira vez? Então, nós passamos o nome do spider que queríamos rodar. É baseado nesse nome que o scrapy encontra e executa o spider.
 
-`URL` é um atributo que guarda a primeira página que será visita quando quisermos pegar os dados de Floripa. Veremos como essa informação é utilizada daqui a pouco. `TERRITORY_ID` é o código do IBGE da cidade que esse spider está extraindo os dados. `AVAILABLE_FROM` é algo especifico desse spider. A data colocada nesse atributo diz ao robozinho desde qual data ele deve procurar os arquivos do diário oficial. Uma informação importante, `URL`, `AVAILABLE_FROM` e `TERRITORY_ID` não são campos utilizados pelo scrapy. Eles são usados no código escrito pelas pessoas que criaram esse spider.
+`URL` é um atributo que guarda a primeira página que será visitada quando quisermos pegar os dados de Floripa. Veremos como essa informação é utilizada daqui a pouco. `TERRITORY_ID` é o código do IBGE da cidade que esse spider está extraindo os dados. `AVAILABLE_FROM` é algo especifico desse spider. A data colocada nesse atributo diz ao robozinho desde qual data ele deve procurar os arquivos do diário oficial. Uma informação importante, `URL`, `AVAILABLE_FROM` e `TERRITORY_ID` não são campos utilizados pelo scrapy. Eles são usados no código escrito pelas pessoas que criaram esse spider.
 
 ```python
     def start_requests(self):
@@ -390,7 +392,7 @@ O atributo `name` diz qual é o nome do spider. Lembra quando rodamos o spider a
             target = target + relativedelta(months=1)
 ```
 
-O scrapy espera que o as classes definidas possuam alguns métodos para que possa funcionar corretamente. Quando um spider vai ser executado, o scrapy chama o método `start_requests` para saber qual é a primeira página que ele deve baixar. Note que o método `start_requets` retorna um objeto `FormRequest`. Nesse caso, ele representa uma request que deve ser feita.  O scrapy permite que você retorne outros valores nesse método. Mas por motivos de simplicidade, vamos deixar isso para outra hora. O que for baixado da request retornada pelo `start_requests` é processado e passado para o método `parse`:
+O scrapy espera que o as classes definidas possuam alguns métodos para que possa funcionar corretamente. Quando um spider vai ser executado, o scrapy chama o método [start_requests](https://docs.scrapy.org/en/latest/topics/spiders.html#scrapy.spiders.Spider.start_requests) para saber qual é a primeira página que ele deve baixar. Note que o método `start_requets` retorna um objeto [FormRequest](https://docs.scrapy.org/en/latest/topics/request-response.html#formrequest-objects). Nesse caso, ele representa uma request que deve ser feita.  O scrapy permite que você retorne outros valores nesse método. Mas por motivos de simplicidade, vamos deixar isso para outra hora. O que for baixado da request retornada pelo `start_requests` é processado e passado para o método [parse](https://docs.scrapy.org/en/latest/topics/spiders.html#scrapy.spiders.Spider.parse):
 
 ```python
     def parse(self, response):
@@ -409,11 +411,13 @@ O scrapy espera que o as classes definidas possuam alguns métodos para que poss
             )
 ```
 
-Note que o método `parse` recebe como parametro um objeto. Esse objeto, que neste caso é chamado de `response`, é o que contem o que foi baixado pelo scrapy daquela URL que você retornou anteriormente no método `start_requets`. É aqui que a mágica acontece. É nesse método que você define como nosso robô vai achar os arquivos do diário oficial. Vamos destrinchar o que está acontecendo aqui. Logo no início do método é chamado uma função chamada `css`. CSS é uma forma que podemos utilizar para encontrar elementos na página. Nesse exemplo, estamos procurando listas não numeradas, que tenham a classe (classe do CSS, não é a mesma classe do python) `listagem` e pegando os links que existem nos itens dessa lista. Sei que é um pouco complicado de entender no primeiro momento. Mas logo a seguir teremos uma sessão só para explicar isso. ;)
+Note que o método `parse` recebe como parametro um objeto. [Esse objeto,](https://docs.scrapy.org/en/latest/topics/request-response.html#response-objects) que neste caso é chamado de `response`, é o que contem o que foi baixado pelo scrapy daquela requisão que você retornou anteriormente no método `start_requets`. É aqui que a mágica acontece. É nesse método que você define como nosso robô vai achar os arquivos do diário oficial. Vamos destrinchar o que está acontecendo aqui. 
+
+Logo no início do método é chamado uma função chamada `css`. CSS é uma forma que podemos utilizar para encontrar elementos na página. Nesse exemplo, estamos procurando listas não numeradas, que tenham a classe (classe do CSS, não é a mesma classe do python) `listagem` e pegando os links que existem nos itens dessa lista. Sei que é um pouco complicado de entender no primeiro momento. Mas logo a seguir teremos uma sessão só para explicar isso. ;)
 
 Uma vez com os link disponíveis da lista, para cada um deles chamamos o método `get_pdf_url` que irá extrair os link dos arquivos do diário oficial. Uma vez com o link, nós retornamos um objeto `Gazette`. Um objeto nada mais é do que uma instanciação em memória de uma classe. Lembra da classe que vimos que ensina o nosso robô a encontrar os arquivos, a `ScFlorianopolisSpider`? Então, o scrapy instância essa classe e chamar seus métodos. Não se preocupe se não compreendeu isso com 100%. Você vai aprendendo conforme for programando. 
 
-Voltando ao `Gazette`... da mesma forma que o `ScFlorianopolisSpider` é uma classe que representa a "inteligência" de como o nosso robô sabe baixar os arquivos do diário oficial de Floripa. O `Gazette` representa um arquivo do diário oficial encontrado. Essa classe possuir alguns atributos que servem para identificar o arquivo. Como a `date` que é a data do diário oficial, `file_urls` contem o link para os arquivos do diário, `territory_id` é o identificador do município no IBGE, `power` diz que qual poder é o documento. O `scraped_at` mostra qual é a data que o arquivo foi baixado.
+Voltando ao `Gazette`... da mesma forma que o `ScFlorianopolisSpider` é uma classe que representa a "inteligência" de como o nosso robô sabe baixar os arquivos do diário oficial de Floripa. O `Gazette` representa um arquivo do diário oficial encontrado. Essa classe possuir alguns atributos que servem para identificar o arquivo. Como a `date` que é a data do diário oficial, `file_urls` contem o link para os arquivos do diário, `territory_id` é o identificador do município no IBGE, `power` diz de qual Poder é o documento. O `scraped_at` mostra qual é a data que o arquivo foi baixado.
 
 Não sei se  você notou que existem mais métodos não citados até agora. São métodos que foram criados para serem utilizados nos métodos citados. Dê uma olhada nele e veja se consegue entender o que eles fazem. Se estiver com dúvidas, não deixe de perguntar nos canais de comunicação dos embaixadores ou me pergunte pelas redes sociais que você pode encontrar aqui no meu blog. 
 
@@ -421,11 +425,11 @@ Continuando... conseguimos baixar a página do diário oficial e encontrar os ar
 
 #### Retorna um objeto request na função `parse`.
 
-Quando o Scrapy chama o método `parse`, ele espera de retorno um objeto de que representa uma requisição a um site, o mesmo tipo de objeto retornado pelo `start_requests`, ou um item (como o `Gazette`), ou ainda uma lista/iterável de ambos. Isso significa que se retornarmos um objeto que represente uma requisição, o scrapy irá baixar a página e chamar a função `parse` novamente. Se retomarmos um item (`Gazette`) o scrapy assume que achamos o que estávamos procurando e passa esse item para o próximo passo na nossa linha de execução. Que nesse caso, é transformar os arquivos em texto e gravar as informações em um banco de dados.
+Quando o scrapy chama o método `parse`, ele espera de retorno um objeto de que representa uma requisição a outra página, o mesmo tipo de objeto retornado pelo `start_requests`, um item (como o `Gazette`), ou ainda uma lista/iterável de ambos. Isso significa que se retornarmos um objeto que represente uma requisição, o scrapy irá baixar a página e chamar a função `parse` novamente. Se retomarmos um item (`Gazette`) o scrapy assume que achamos o que estávamos procurando e passa esse item para o próximo passo na nossa linha de execução. Que nesse caso, é transformar os arquivos em texto e gravar as informações em um banco de dados.
 
 Quando o método `parse` retornar nada, significa que já achamos tudo o que queremos e nosso robô pode parar e recarregar as baterias.
 
-#### Retornar uma lista ou iterável no `start_requets`
+#### Retornar uma lista `start_requets`
 
 Dê uma olhada no `start_requets` novamente. Note que é usado a palavra reservada `yield` ao invés de `return`.  Isso significa que o método é uma função geradora. Isso significa que a partir da segunda chamada ao `start_request` a execução irá continuar a partir de onde o `yield` anterior foi chamado. Ou seja, enquanto o `start_request` não retorna `None` ou uma lista finita de itens, o scrapy continuará baixando as páginas das URL retornadas pela função `start_requests`. Entenda mais sobre isso no  [video](https://www.youtube.com/watch?v=Gre1yR5yH7U) do Python para Zumbies
 
@@ -435,7 +439,7 @@ PS: No momento dessa escrita, o spider do Floripa tem um bug. O spider nunca ter
 
 #### Pipeline
 
-Vamos voltar ao que acontece depois que retornamos um item, um arquivo do diário oficial. Uma vez que encontramos algo que estávamos procurando o scrapy passa esse item por uma série de procedimentos definidos em um arquivos de configuração. No scrapy, essa séria de procedimentos é chamada de `pipeline`. Todos os procedimentos executados nesse pipeline estão definidos no arquivo `processing/data_collection/gazette/pipelines.py`. Lá você vai ver o `PostgreSQLPipeline` que é a etapa que grava aquelas informações que você definiu la no objeto `Gazette` retornado pela função `parse` no banco de dados. Existe o `GazetteDateFilteringPipeline` que ignora os arquivos do diário oficial anteriores a uma data determinada no spider. Vai ver também o `PdfParsingPipeline` que é o passo que extrai o texto dos arquivos de PDF.
+Vamos voltar ao que acontece depois que retornamos um item, um arquivo do diário oficial. Uma vez que encontramos algo que estávamos procurando o scrapy passa esse item por uma série de procedimentos definidos em um arquivo de configuração. No scrapy, essa séria de procedimentos é chamada de [pipeline](https://doc.scrapy.org/en/latest/topics/item-pipeline.html). Todos os procedimentos executados nesse `pipeline` estão definidos no arquivo `processing/data_collection/gazette/pipelines.py`. Lá você vai ver o `PostgreSQLPipeline` que é a etapa que grava aquelas informações que você definiu la no objeto `Gazette` retornado pela função `parse` no banco de dados. Existe o `GazetteDateFilteringPipeline` que ignora os arquivos do diário oficial anteriores a uma data determinada no spider. Vai ver também o `PdfParsingPipeline` é o passo que extrai o texto dos arquivos de PDF.
 
 Se tudo isso funcionar como o esperado. No final você terá diversos arquivos na pasta `data/full`.  :-)
 
@@ -471,14 +475,12 @@ Se a página não mudou desde quando escrevi esse artigo você deverá estar ven
 
 ![]({filename}/images/diario_pagina.png)
 
-Legal, agora vamos brincar com os seletores. Vou utilizar o Firefox, mas o procedimento é muito parecido em outros navegadores. Clique com o botão direito na página e clique na opção "Inspecionar elemento". Agora você deverá estar vendo algo parecido com isso, note que você pode ver o HTML da página:
+Legal, agora vamos brincar com os seletores. Vou utilizar o Firefox, mas o procedimento é muito parecido em outros navegadores. Clique com o botão direito na página e clique na opção "Inspecionar elemento". Agora você deverá estar vendo algo parecido com isso, note que você pode ver o HTML da página(seta 2):
 
 ![]({filename}/images/diario_html.png)
 
-Nesssa tela podemos ver o HTML da página (seta 2), podemos testar o nosso seletor CSS (seta 1) e ver o que ele encontrou (seta 3).
-
-Olha só que legal, encontramos 17 items (seta 4). Note que são exatamente os link para os arquivos que estamos procurando! São esses mesmos itens que são processados na função `parse`.
+Nesssa tela podemos testar o nosso seletor CSS (seta 1) e ver o que ele encontrou (seta 3). Olha só que legal, encontramos 17 items (seta 4). Note que são exatamente os link para os arquivos que estamos procurando! São esses mesmos itens que são processados na função `parse`.
 
 #### XPATH
 
-Seletores CSS não são a única forma de você achar os elementos nas páginas. Você pode encontrar utilizando XPATH. Não vou entrar no XPATH nesse momento. Acho que o artigo já tem bastante coisa para todo mundo interessado brincar por um bom tempo. Além do que, os seletores CSS já podem resolver muitos, senão a maioria, dos casos. Mas para quem ficou interessado tem os seguintes links de documentação: 
+Seletores CSS não são a única forma de você achar os elementos nas páginas. Você pode encontrar utilizando XPATH. Não vou entrar no XPATH nesse momento. Acho que o artigo já tem bastante coisa para todos que estiverem interessado em brincar com por um bom tempo. Além do que, os seletores CSS já podem resolver muitos, senão a maioria, dos casos. Mas para quem ficou interessado tem o seguinte link para a [documentação da Mozilla](https://developer.mozilla.org/en-US/docs/Web/XPath)
