@@ -1,5 +1,6 @@
 Title: Como funciona o robozinho do Serenata que baixa os diários oficiais?
 Date: 2019-11-28 00:00
+Modified: 2019-12-10 20:00
 Tags: python, scrapy, html, serenata, css, xpath
 Author: José Guilherme Vanz
 
@@ -301,7 +302,8 @@ Python é a linguagem de programação que utilizamos para escrever o nosso rob�
 
 Scrapy é a biblioteca que utilizamos para acessar, navegar e encontrar os que queremos nas páginas dos diários oficiais. Podemos dizer que é o coração do nosso robô. Essa lib faz o trabalho sujo que baixar e deixar disponíveis de maneira mais fácil os dados das páginas que estamos vasculhando.
 
-Vamos dar uma olhada como é definido o nosso robô e  a maneira de navegar pelas páginas web. Para exemplificar, vou utilizar a cidade de Florianópolis:
+Vamos dar uma olhada como é definido o nosso robô e  a maneira de navegar pelas páginas web.  Ah! Só para deixar claro, "spider" é o nome dados no scrapy para código que irá acessar e baixar os dados do site do diário oficial.
+Para exemplificar, vou utilizar a cidade de Florianópolis:
 
 ```python
 import re
@@ -377,7 +379,7 @@ Nas primeiras linhas do script estamos dizendo ao Python o que vamos utilizar. P
     AVAILABLE_FROM = date(2015, 1, 1)  # actually from June/2009
 ```
 
-O atributo `name` diz qual é o nome do spider. Lembra quando rodamos o spider a primeira vez? Então, nós passamos o nome do spider que queríamos rodar. É baseado nesse nome que o scrapy encontra e executa o spider.
+O atributo `name` diz qual é o nome do spider. Lembra quando rodamos o spider a primeira vez? Então, nós passamos o nome do spider que queríamos rodar. É baseado nesse nome que o scrapy encontra e executa o spider. 
 
 `URL` é um atributo que guarda a primeira página que será visitada quando quisermos pegar os dados de Floripa. Veremos como essa informação é utilizada daqui a pouco. `TERRITORY_ID` é o código do IBGE da cidade que esse spider está extraindo os dados. `AVAILABLE_FROM` é algo especifico desse spider. A data colocada nesse atributo diz ao robozinho desde qual data ele deve procurar os arquivos do diário oficial. Uma informação importante, `URL`, `AVAILABLE_FROM` e `TERRITORY_ID` não são campos utilizados pelo scrapy. Eles são usados no código escrito pelas pessoas que criaram esse spider.
 
@@ -438,7 +440,7 @@ PS: No momento dessa escrita, o spider do Floripa tem um bug. O spider nunca ter
 
 #### Pipeline
 
-Vamos voltar ao que acontece depois que retornamos um item, um arquivo do diário oficial. Uma vez que encontramos algo que estávamos procurando o scrapy passa esse item por uma série de procedimentos definidos em um arquivo de configuração. No scrapy, essa séria de procedimentos é chamada de [pipeline](https://doc.scrapy.org/en/latest/topics/item-pipeline.html). Todos os procedimentos executados nesse `pipeline` estão definidos no arquivo `processing/data_collection/gazette/pipelines.py`. Lá você vai ver o `PostgreSQLPipeline` que é a etapa que grava aquelas informações que você definiu la no objeto `Gazette` retornado pela função `parse` no banco de dados. Existe o `GazetteDateFilteringPipeline` que ignora os arquivos do diário oficial anteriores a uma data determinada no spider. Vai ver também o `PdfParsingPipeline` é o passo que extrai o texto dos arquivos de PDF.
+Vamos voltar ao que acontece depois que retornamos um item, um arquivo do diário oficial. Uma vez que encontramos algo que estávamos procurando o scrapy passa esse item por uma série de procedimentos definidos em um arquivo de configuração. No scrapy, essa séria de procedimentos é chamada de [pipeline](https://doc.scrapy.org/en/latest/topics/item-pipeline.html). Todos os procedimentos executados nesse `pipeline` estão definidos no arquivo `processing/data_collection/gazette/pipelines.py`. Lá você vai ver o `PostgreSQLPipeline` que é a etapa que grava aquelas informações que você definiu la no objeto `Gazette` retornado pela função `parse` no banco de dados. Existe o `GazetteDateFilteringPipeline` que ignora os arquivos do diário oficial anteriores a uma data determinada no spider. Vai ver também o `ExtractTextPipeline` é o passo que extrai o texto dos arquivos de PDF, doc e texto.
 
 Se tudo isso funcionar como o esperado. No final você terá diversos arquivos na pasta `data/full`.  :-)
 
