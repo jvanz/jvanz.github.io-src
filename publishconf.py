@@ -56,7 +56,7 @@ EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 # Theme stuff
 THEME = "pelican-hyde"
 
-BIO = "I'm José Guilherme Vanz, from south Brazil. Working as Software Engineer. I love Open Source and programming"
+BIO = "Just a guy fixing and creating bugs worldwide"
 PROFILE_IMAGE = "avatar.jpg"
 
 PLUGINS = ['pelican_gist']
