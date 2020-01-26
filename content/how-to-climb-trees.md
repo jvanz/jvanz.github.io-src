@@ -1,5 +1,5 @@
 Title: How can we climb a tree structure?
-Date: 2020-01-18 00:00
+Date: 2020-01-26 00:00
 Tags: tree, data-structure, algorithms
 Author: José Guilherme Vanz
 
@@ -46,6 +46,8 @@ Their names came from the relative root position with respect to its sub trees. 
 `preorder` root node come first. `posorder` the root node is the last to be visited.
 `inorder`the root node is visited between its left and right sub trees.
 
+The 3 following algorithms visit each node once. Thus, their running time is `O(n)`
+
 #### Preorder traversal
 ![]({filename}/images/preorder.gif)
 
@@ -57,7 +59,7 @@ in the left and by consequence the whole sub tree. After that, we do the same
 with the right node and its sub tree. Considering our tree, the nodes would be 
 visited in the following order: `33 15 10 5 20 18 47 38 36 39 51 49`.
 
-A possible recursive pseudo code this algorithms is:
+A possible recursive pseudocode this algorithms is:
 
 ```
 // preorder the root come before its subtrees
@@ -78,7 +80,7 @@ left, the right node and their sub tree and then the root node. If we run this
 algorithm using our tree as the input, the visit would be:
 `5 10 18 20 15 36 39 38 49 51 47 33`
 
-A possible recursive pseudo code this algorithms is:
+A possible recursive pseudocode this algorithms is:
 
 ```
 // posorder the root come after its subtrees
@@ -100,7 +102,7 @@ left, the root and then right node and its sub tree. If we run this
 algorithm using our tree as the input, the visit would be:
 `5 10 15 18 20 33 36 38 39 47 49 51`
 
-A possible recursive pseudo code this algorithms is:
+A possible recursive pseudocode this algorithms is:
 
 ```
 // inorder the root come between its subtrees
@@ -125,7 +127,7 @@ Still using our tree as input example, this is the output: `33 15 47 10 20 38 51
 I would say we can consider that level order traversal a variation of the preorder
 algorithm. The difference here is that we will use an auxiliary queue to visit 
 the node. But it will continue visiting the nodes in the preorder. Take a look
-in the pseudo code here:
+in the pseudocode here:
 
 ```
 def level-order(root):
@@ -160,8 +162,6 @@ node following this rules:
 - When move to a node in the left, subtract one (-1) from the distance;
 - When move to a node in the right, add one (+1) from the distance;
 
-![]({filename}/images/horizontal_distance_tree.png)
-
 Let's take a look in the HD for each node from the previous tree:
 ![]({filename}/images/horizontal_distance_values_tree.png)
 
@@ -177,8 +177,35 @@ Coming back to our example tree and considering that we are using a
 51		// HD 2
 ```
 
-Again, a pseudo code can be:
+If we give different colors for each HD, we can visualize the tree as the fillowing:
+![]({filename}/images/tree-hd-colors.png)
 
+Again, a pseudocode can be:
+
+```
+// function to find the horizontal distances of each nodes
+def get-vertical-distances(distances, root, distance):
+	if root is nil
+		return
+	// add the node in the node list for its HD
+	distances[distance].append(root) 
+	// recursive call in the left sub tree
+	get-vertical-distances(distances, root.left, distances-1) 
+	// recursive call in the right sub tree
+	get-vertical-distances(distances, root.right, distances+1) 
+	
+	
+// vertical order traveral
+def vertical-order(root):
+	// map to store the node with the same HD
+	map<hd, list<nodes>> distances
+	// find the nodes HD and populate the map
+	get-vertical-distances(distances, root, 0)
+	// visit the node by their distance
+	for each distance in distances:
+		for each node in distance:
+			visit(node)
+```
 
 ##### That's all for now!
 
@@ -192,6 +219,8 @@ If you're interested in C++ and a real implementation of these algorithms,
 you are welcome to check it out. It's not something to be used in production, 
 but you can take a look and show me if I'm doing something wrong! :)
 
+I've used Latex to create the trees for this article: [Example: Red-black tree](http://www.texample.net/tikz/examples/red-black-tree/)
+
 If you interested in more depth material. These books can be useful:
 
 [The Art of Computer Programming, Vol. 1: Fundamental Algorithms, 3rd Edition](https://www.amazon.com/Art-Computer-Programming-Vol-Fundamental/dp/0201896834/ref=sr_1_5?keywords=knuth&qid=1580064084&sr=8-5)
@@ -199,3 +228,4 @@ If you interested in more depth material. These books can be useful:
 [Introduction to Algorithms, 3rd Edition](https://www.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844/ref=sr_1_1?crid=2GQPUFV6PCZJ5&keywords=algorithms+cormen&qid=1580065268&sprefix=algori%2Caps%2C332&sr=8-1)
 
 [Algorithms Illuminated: Part 1: The Basics](https://www.amazon.com/Algorithms-Illuminated-Part-1-Basics/dp/0999282905/ref=sr_1_2?crid=21RDTL7FTNOI7&keywords=algorithms+illuminated&qid=1580065761&sprefix=algorithms+%2Caps%2C317&sr=8-2)
+
