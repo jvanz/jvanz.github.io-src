@@ -40,13 +40,14 @@ The nodes `5`, `18`, `36`, `39` and `49` are the leaf nodes.  Leaf nodes has not
 ### Algorithms
 
 The following section describe the 3 main ways you can visit the nodes in a tree. 
-In each of the following subsection will you see an image where the number of the nodes represent the
-visit order. Thus, number `1` is the first visit node, `2` the second, `3` the
-third and so on. The names `preorder`, `inorder` and `posorder` came from the 
-relative root position with respect to its subtrees.
+You will see a gif showing the order in each node is visited. Black nodes mean 
+that it has been visited. The main algorithms covered is `preorder`, `inorder` and `posorder`.
+Their names came from the relative root position with respect to its sub trees. Thus,
+`preorder` root node come first. `posorder` the root node is the last to be visited.
+`inorder`the root node is visited between its left and right sub trees.
 
 #### Preorder traversal
-![]({filename}/images/pre_order_tree.png)
+![]({filename}/images/preorder.gif)
 
 Ok, let's start with the pre order traversal. In this algorithm, as the name
 suggests, we visit the tree nodes in the following order: root, left, right. 
@@ -70,7 +71,7 @@ def preorder-traversal(root):
 ```
 
 #### Posorder traversal
-![]({filename}/images/pos_order_tree.png)
+![]({filename}/images/posorder.gif)
 
 When we walk though a tree using the pos order traversal we fist visit the
 left, the right node and their sub tree and then the root node. If we run this 
@@ -92,7 +93,7 @@ def posorder-traversal(root):
 ```
 
 #### Inorder traversal
-![]({filename}/images/in_order_tree.png)
+![]({filename}/images/inorder.gif)
 
 When we walk though a tree using the in order traversal we fist visit the
 left, the root and then right node and its sub tree. If we run this 
@@ -114,7 +115,7 @@ def inorder-traversal(root):
 ```
 
 ### Level order traversal
-![]({filename}/images/level_order_tree.png)
+![]({filename}/images/level-order.gif)
 
 Different from the previous traversals this algorithm does not walk though the
 tree following the children nodes. It walk though the tree by level. This means that
