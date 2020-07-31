@@ -5,7 +5,7 @@ Author: José Guilherme Vanz
 
 ![]({filename}/images/giphy.gif)
 
-Some weeks ago I finished a online course about C++. I've already programmed in the language bBut I decided to take the course to refresh my skills and have some projects in my portfolio.
+Some weeks ago I finished a online course about C++. I've already programmed in the language but I decided to take the course to refresh my skills and have some projects in my portfolio.
 I wrote this article to consolidate my memory and try to explain to myself one of the things that I've learnt. Maybe you can find useful as well. What I'll cover in this article is the modern way to handle
 resource in C++. I'll focus on memory, but the same concept can be applied in other resources types like sockets, files and etc. I'll also try to show how modern C++ does not require you to use `new`/`delete` to acquire and release memory. 
 
