@@ -192,7 +192,7 @@ Wow! Some crazy and awesome image processing. There are 2 owners of the pointer 
 Processing done! Now there are 1 owners.
 ```
 
-Notice the change in the owners count. When the object is passed to the `SomeCrazyImageProcessing` the argument object is a copy of the object passed by the caller. When this happen a counter inside the smart pointer object is incremented and the pointer to the resource copied. This is a very simple representation of what's going on:
+Notice the change in the owners count. When the object is passed to the `SomeCrazyImageProcessing` the argument object is a copy of the object passed by the caller. When this happen a counter inside the smart pointer object is incremented and the pointer to the resource copied. As all the other images from this article, the following image is a conceptual representation of what's going on:
 
 ![]({filename}/images/shared_ptr.gif)
 
