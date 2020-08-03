@@ -311,6 +311,8 @@ Another way to thing about smart pointer, as said by Bjarne Stroupstrup (C++ cre
 
 That's all I have to you now. I hope this superficial article helps you understand what RAII is and how it can help you to handle resources properly in your C++ programs. I believe this is a very powerful concept which you should use in your C++ program right away. However, I do not think you should rewrite all your applications in C++ just because you just learnt classes which release resources "automatically" for you. As I've listened from one engineer, programming languages are a tools. Each tool has your goal. Do you not paint a wall with a hammer, don't you?
 
+Furthermore, if you are interested in a more complex example of this concepts, you can take a look in the [Capstone project](https://github.com/jvanz/CppND-Capstone-Project) for the course that I mentioned in the beginning. It uses the techniques described in this article and much more like threads, tasks, message queues, futures, promises and much more. 
+
 If you would like to know more or if the article is confuse, let me know. Furthermore, there are more material in the references section.
 
 ### Stack and  heap
